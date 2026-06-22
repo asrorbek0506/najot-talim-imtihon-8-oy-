@@ -1,8 +1,6 @@
-import Header from "../components/home/Header";
-import Footer from "../components/home/Footer";
-import PageHero from "../components/ui/PageHero";
 import ContactForm from "../components/contact/ContactForm";
 import ContactInfo from "../components/contact/ContactInfo";
+import PageHero from "../components/ui/PageHero";
 
 const Contact = () => {
   return (

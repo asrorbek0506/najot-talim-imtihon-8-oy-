@@ -1,8 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
-import { Icon } from "../ui/Icon";
 import { navLinks } from "../../data/home.data";
+import useUserStore from "../../store/user.store";
+import { Icon } from "../ui/Icon";
+import ProfileDropdown from "../ui/ProfileDropdown";
 
 const Header = () => {
+  const user = useUserStore((state) => state.user);
+  const isLoggedIn = useUserStore((state) => state.isAuthenticated);
+
   return (
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -37,7 +42,7 @@ const Header = () => {
               >
                 {link.label}
               </NavLink>
-            )
+            ),
           )}
         </nav>
 
@@ -54,18 +59,24 @@ const Header = () => {
               />
             </svg>
           </button>
-          <Link
-            to="/login"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900"
-          >
-            Kirish
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-          >
-            Ro'yxatdan o'tish
-          </Link>
+          {isLoggedIn ? (
+            <ProfileDropdown name={user?.name} email={user?.email} />
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900"
+              >
+                Kirish
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              >
+                Ro'yxatdan o'tish
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

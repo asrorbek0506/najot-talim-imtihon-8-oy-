@@ -1,8 +1,17 @@
 import { Outlet } from "react-router-dom";
 import DashboardSidebar from "../dashboard/DashboardSidebar";
 import DashboardTopbar from "../dashboard/DashboardTopbar";
+import useGetUser from "../../hooks/api/useGetUser";
+import useUserStore from "../../store/user.store";
+import { useEffect } from "react";
 
 const DashboardLayout = () => {
+  const { data } = useGetUser();
+  const store = useUserStore();
+  const userData = data?.data.data;
+  useEffect(() => {
+    store.setUser(userData);
+  }, [userData]);
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-900">
       <DashboardSidebar />
