@@ -9,7 +9,8 @@ import Teachers from "../pages/Teachers";
 import Home from "../pages/Home";
 import ProtectedRoute from "./protected.route";
 import AuthLayout from "../components/layouts/AuthLayout";
-
+import About from "../pages/About";
+import { Blog } from "../pages/Blog";
 const routes = createBrowserRouter([
   {
     element: <AuthLayout />,
@@ -28,6 +29,14 @@ const routes = createBrowserRouter([
           {
             path: "/contact",
             element: <Contact />,
+          },
+          {
+            path: "/about",
+            element: <About />,
+          },
+          {
+            path: "/blog",
+            element: <Blog />,
           },
         ],
       },

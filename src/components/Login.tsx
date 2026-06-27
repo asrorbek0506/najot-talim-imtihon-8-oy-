@@ -7,7 +7,7 @@ const Login = () => {
     setTimeout(() => {
       store.setUser({ name: "Jasurbek", email: "jasurbek@gmail.com" });
     }, 8000);
-  }, []);
+  }, []); 
   console.log("Login render");
   return <div>Login</div>;
 };
