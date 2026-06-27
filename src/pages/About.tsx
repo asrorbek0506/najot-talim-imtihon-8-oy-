@@ -1,9 +1,9 @@
-import { AboutHero } from "../components/about/AboutHero";
-import { MissionVision } from "../components/about/MissionVision";
-import { Timeline } from "../components/about/Timeline";
-import { Team } from "../components/about/Team";
-import { Achievements } from "../components/about/Achievements";
-import { JoinUs } from "../components/about/JoinUs";
+import { AboutHero } from "../components/About/AboutHero";
+import { MissionVision } from "../components/About/MissionVision";
+import { Timeline } from "../components/About/Timeline";
+import { Team } from "../components/About/Team";
+import { Achievements } from "../components/About/Achievements";
+import { JoinUs } from "../components/About/JoinUs";
 
 const About = () => {
   return (

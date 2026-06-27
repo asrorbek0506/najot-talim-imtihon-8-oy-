@@ -11,6 +11,8 @@ import ProtectedRoute from "./protected.route";
 import AuthLayout from "../components/layouts/AuthLayout";
 import About from "../pages/About";
 import { Blog } from "../pages/Blog";
+import Pricing from "../pages/Pricing";
+
 const routes = createBrowserRouter([
   {
     element: <AuthLayout />,
@@ -37,6 +39,10 @@ const routes = createBrowserRouter([
           {
             path: "/blog",
             element: <Blog />,
+          },
+          {
+            path: "/pricing",
+            element: <Pricing />,
           },
         ],
       },
