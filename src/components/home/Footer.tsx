@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Icon } from "../ui/Icon";
 import { footerCourses, footerPages, socials } from "../../data/home.data";
 
@@ -27,10 +28,10 @@ const Footer = () => {
           </h4>
           <ul className="mt-4 space-y-2.5">
             {footerPages.map((page) => (
-              <li key={page}>
-                <a href="#" className="text-sm hover:text-white">
-                  {page}
-                </a>
+              <li key={page.label}>
+                <Link to={page.path} className="text-sm hover:text-white">
+                  {page.label}
+                </Link>
               </li>
             ))}
           </ul>

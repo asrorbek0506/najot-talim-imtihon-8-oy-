@@ -6,7 +6,7 @@ import Button from "../components/ui/Button";
 import { Icon } from "../components/ui/Icon";
 import type { LoginForm } from "../types/login.type";
 import { useLogin } from "../hooks/api/useLogin";
-import { setItem } from "../utils/localstorage";
+import { setTokens } from "../utils/localstorage";
 import { toast } from "react-toastify";
 
 const features = [
@@ -35,12 +35,16 @@ const Login = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const token: string = data?.data.data.tokens?.accessToken;
-      setItem(token);
+      const payload = data?.data.data;
+      setTokens(payload.tokens.accessToken, payload.tokens.refreshToken);
       toast.success("Tizimga muvaffaqiyatli kirdingiz");
+      const destination =
+        payload.user.role === "admin" || payload.user.role === "super_admin"
+          ? "/admin"
+          : "/dashboard";
       setTimeout(() => {
-        window.location.replace("/dashboard");
-      }, 1500);
+        window.location.replace(destination);
+      }, 1000);
     }
   }, [isSuccess]);
 

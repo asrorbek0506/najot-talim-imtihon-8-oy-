@@ -1,6 +1,8 @@
 import { Icon } from "../ui/Icon";
+import useUserStore from "../../store/user.store";
 
 const DashboardTopbar = () => {
+  const user = useUserStore((state) => state.user);
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-gray-100 bg-white/90 px-4 backdrop-blur sm:px-6 lg:px-8">
       <button
@@ -24,12 +26,14 @@ const DashboardTopbar = () => {
 
       <div className="ml-auto flex items-center gap-x-3 border-l border-gray-100 pl-4">
         <img
-          src="https://i.pravatar.cc/80?img=11"
-          alt="Bobur Tojiev"
+          src={user?.avatarUrl || "https://i.pravatar.cc/80?img=11"}
+          alt={user ? `${user.firstName} ${user.lastName}` : "Talaba"}
           className="h-9 w-9 rounded-full object-cover"
         />
         <div className="hidden text-right sm:block">
-          <p className="text-sm font-semibold text-gray-900">Bobur Tojiev</p>
+          <p className="text-sm font-semibold text-gray-900">
+            {user ? `${user.firstName} ${user.lastName}` : "Talaba"}
+          </p>
           <p className="text-xs text-gray-400">Online talaba</p>
         </div>
       </div>

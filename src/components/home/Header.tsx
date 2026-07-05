@@ -60,7 +60,10 @@ const Header = () => {
             </svg>
           </button>
           {isLoggedIn ? (
-            <ProfileDropdown name={user?.name} email={user?.email} />
+            <ProfileDropdown
+              name={user ? `${user.firstName} ${user.lastName}` : undefined}
+              email={user?.email}
+            />
           ) : (
             <>
               <Link

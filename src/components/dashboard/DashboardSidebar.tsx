@@ -1,8 +1,12 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Icon } from "../ui/Icon";
 import { dashboardNav } from "../../data/dashboard.data";
+import useUserStore from "../../store/user.store";
+import useLogout from "../../hooks/api/useLogout";
 
 const DashboardSidebar = () => {
+  const user = useUserStore((state) => state.user);
+  const { logout } = useLogout();
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-gray-100 bg-white lg:flex">
       <div className="flex h-16 items-center gap-x-2.5 border-b border-gray-100 px-6">
@@ -55,21 +59,23 @@ const DashboardSidebar = () => {
 
       <div className="flex items-center gap-x-3 border-t border-gray-100 px-4 py-4">
         <img
-          src="https://i.pravatar.cc/80?img=11"
-          alt="Bobur Tojiev"
+          src={user?.avatarUrl || "https://i.pravatar.cc/80?img=11"}
+          alt={user ? `${user.firstName} ${user.lastName}` : "Talaba"}
           className="h-9 w-9 rounded-full object-cover"
         />
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-900">Bobur Tojiev</p>
+        <div className="flex-1 truncate">
+          <p className="truncate text-sm font-semibold text-gray-900">
+            {user ? `${user.firstName} ${user.lastName}` : "Talaba"}
+          </p>
           <p className="text-xs text-gray-400">Online talaba</p>
         </div>
-        <Link
-          to="/login"
+        <button
+          onClick={() => logout()}
           className="text-gray-400 transition-colors hover:text-gray-700"
           aria-label="Chiqish"
         >
           <Icon.logout />
-        </Link>
+        </button>
       </div>
     </aside>
   );

@@ -6,7 +6,7 @@ import Button from "../components/ui/Button";
 import { Icon } from "../components/ui/Icon";
 import type { RegisterForm } from "../types/register.type";
 import { useRegister } from "../hooks/api/useRegister";
-import { setItem } from "../utils/localstorage";
+import { setTokens } from "../utils/localstorage";
 import { toast } from "react-toastify";
 
 const features = [
@@ -27,17 +27,18 @@ const Register = () => {
   const onSubmit = (data: RegisterForm) => {
     delete data.confirmPassword;
     delete data.terms;
+    data.phone = data.phone.replace(/[^\d+]/g, "");
     mutateAsync(data);
   };
 
   useEffect(() => {
     if (isSuccess) {
-      const token: string = data?.data.data.tokens?.accessToken;
-      setItem(token);
+      const payload = data?.data.data;
+      setTokens(payload.tokens.accessToken, payload.tokens.refreshToken);
       toast.success("Ro'yxatdan o'tish yakunlandi");
       setTimeout(() => {
         window.location.replace("/dashboard");
-      }, 2000);
+      }, 1000);
     }
   }, [isSuccess]);
 

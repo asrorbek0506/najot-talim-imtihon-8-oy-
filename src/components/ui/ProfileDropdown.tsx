@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Icon } from "./Icon";
-import useUserStore from "../../store/user.store";
-import { removeItem } from "../../utils/localstorage";
+import useLogout from "../../hooks/api/useLogout";
 import type { IconName } from "../../types/dashboard.type";
 
 interface ProfileDropdownProps {
@@ -12,15 +11,14 @@ interface ProfileDropdownProps {
 
 const menuItems: { label: string; icon: IconName; path: string }[] = [
   { label: "Dashboard", icon: "home", path: "/dashboard" },
-  { label: "Profilim", icon: "user", path: "/dashboard" },
-  { label: "Sozlamalar", icon: "settings", path: "/dashboard" },
+  { label: "Profilim", icon: "user", path: "/dashboard/profile" },
+  { label: "Sozlamalar", icon: "settings", path: "/dashboard/settings" },
 ];
 
 const ProfileDropdown = ({ name, email }: ProfileDropdownProps) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const logout = useUserStore((state) => state.logout);
+  const { logout } = useLogout();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -36,10 +34,8 @@ const ProfileDropdown = ({ name, email }: ProfileDropdownProps) => {
   }, []);
 
   const handleLogout = () => {
-    removeItem();
-    logout();
     setOpen(false);
-    navigate("/");
+    logout();
   };
 
   const initial = name?.charAt(0).toUpperCase() || "U";

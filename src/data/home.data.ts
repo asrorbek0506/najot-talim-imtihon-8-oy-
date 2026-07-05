@@ -10,9 +10,11 @@ import type {
 
 export const navLinks: NavLink[] = [
   { label: "Bosh sahifa", path: "/" },
-  { label: "Kurslar", path: "#" },
+  { label: "Kurslar", path: "/courses" },
   { label: "O'qituvchilar", path: "/teachers" },
-  { label: "Blog", path: "#" },
+  { label: "Blog", path: "/blog" },
+  { label: "Narxlar", path: "/pricing" },
+  { label: "Biz haqimizda", path: "/about" },
   { label: "Aloqa", path: "/contact" },
 ];
 
@@ -23,7 +25,11 @@ export const heroFeatures: string[] = [
 ];
 
 export const stats: Stat[] = [
-  { value: "5 000+", label: "Bitiruvchilar", color: "bg-blue-50 text-blue-600" },
+  {
+    value: "5 000+",
+    label: "Bitiruvchilar",
+    color: "bg-blue-50 text-blue-600",
+  },
   { value: "35+", label: "Kurslar", color: "bg-purple-50 text-purple-600" },
   {
     value: "42",
@@ -226,7 +232,7 @@ export const teachers: Teacher[] = [
 
 export const testimonials: Testimonial[] = [
   {
-    text: "\"JavaScript kursini tugatganidan keyin 2 hafta ichida ishga kirdim. O'qituvchilar har bir savolimga sabr bilan javob berishdi. Tavsiya qilaman!\"",
+    text: '"JavaScript kursini tugatganidan keyin 2 hafta ichida ishga kirdim. O\'qituvchilar har bir savolimga sabr bilan javob berishdi. Tavsiya qilaman!"',
     photo: "https://i.pravatar.cc/100?img=11",
     name: "Bobur Tojiev",
     role: "Frontend Developer, Uzum",
@@ -238,7 +244,7 @@ export const testimonials: Testimonial[] = [
     role: "Product Designer, EPAM",
   },
   {
-    text: "\"Python kursi juda yaxshi tashkillashtirilgan. O'qituvchi har bir mavzuni amaliy misol bilan tushuntirdi. Endi backend dasturchi sifatida ishlayman.\"",
+    text: '"Python kursi juda yaxshi tashkillashtirilgan. O\'qituvchi har bir mavzuni amaliy misol bilan tushuntirdi. Endi backend dasturchi sifatida ishlayman."',
     photo: "https://i.pravatar.cc/100?img=15",
     name: "Rustam Olimov",
     role: "Backend Developer, Inha University",
@@ -278,12 +284,15 @@ export const faqs: Faq[] = [
   },
 ];
 
-export const footerPages: string[] = [
-  "Bo'sh sahifa",
-  "Kurslar",
-  "O'qituvchilar",
-  "Blog",
-  "Aloqa",
+export const footerPages: NavLink[] = [
+  { label: "Bosh sahifa", path: "/" },
+  { label: "Kurslar", path: "/courses" },
+  { label: "O'qituvchilar", path: "/teachers" },
+  { label: "Blog", path: "/blog" },
+  { label: "Narxlar", path: "/pricing" },
+  { label: "Biz haqimizda", path: "/about" },
+  { label: "FAQ", path: "/faq" },
+  { label: "Aloqa", path: "/contact" },
 ];
 
 export const footerCourses: string[] = [

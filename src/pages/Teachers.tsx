@@ -1,19 +1,42 @@
+import { useState } from "react";
 import TeachersGrid from "../components/teachers/TeachersGrid";
 import TeachersToolbar from "../components/teachers/TeachersToolbar";
 import PageHero from "../components/ui/PageHero";
+import { useInstructors } from "../hooks/api/useInstructors";
 
 const Teachers = () => {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, isFetching } = useInstructors({
+    page,
+    limit: 8,
+    search: search.trim() || undefined,
+  });
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <PageHero
         breadcrumb="O'qituvchilar"
         title="Bizning o'qituvchilar"
-        subtitle="42 ta tajribali mutaxassis o'z bilim va tajribasini siz bilan ulashishga tayyor."
+        subtitle="Tajribali mutaxassislar o'z bilim va tajribasini siz bilan ulashishga tayyor."
       />
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <TeachersToolbar />
-          <TeachersGrid />
+          <TeachersToolbar
+            search={search}
+            onSearchChange={(v) => {
+              setSearch(v);
+              setPage(1);
+            }}
+          />
+          <TeachersGrid
+            teachers={data?.items ?? []}
+            page={data?.page ?? 1}
+            totalPages={data?.totalPages ?? 1}
+            isLoading={isLoading || isFetching}
+            onPageChange={setPage}
+          />
         </div>
       </section>
     </div>

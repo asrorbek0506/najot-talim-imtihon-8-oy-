@@ -1,9 +1,8 @@
+import type { AuthUser } from "./auth.type";
+
 export interface IUserStore {
-  user: {
-    name: string;
-    email: string;
-  } | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
-  setUser: (user: { name: string; email: string }) => void;
+  setUser: (user: AuthUser | null | undefined) => void;
   logout: () => void;
 }
