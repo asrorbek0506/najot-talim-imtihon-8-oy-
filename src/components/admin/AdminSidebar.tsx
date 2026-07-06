@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Icon } from "../ui/Icon";
-import { adminNav } from "../../data/admin.data";
+import { adminNav } from "../../data/admin-nav.data";
 import useUserStore from "../../store/user.store";
 import useLogout from "../../hooks/api/useLogout";
 
@@ -21,30 +21,36 @@ const AdminSidebar = () => {
         </div>
       </div>
 
-      <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-6">
-        <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-600">
-          Boshqaruv
-        </p>
-        {adminNav.map((item) => {
-          const IconComponent = Icon[item.icon];
-          return (
-            <NavLink
-              key={item.label}
-              to={item.path}
-              end={item.path === "/admin"}
-              className={({ isActive }) =>
-                `flex items-center gap-x-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-blue-600 text-white"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                }`
-              }
-            >
-              <IconComponent />
-              {item.label}
-            </NavLink>
-          );
-        })}
+      <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-6">
+        {adminNav.map((group) => (
+          <div key={group.title}>
+            <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-600">
+              {group.title}
+            </p>
+            <div className="space-y-1">
+              {group.items.map((item) => {
+                const IconComponent = Icon[item.icon];
+                return (
+                  <NavLink
+                    key={item.label}
+                    to={item.path}
+                    end={item.path === "/admin"}
+                    className={({ isActive }) =>
+                      `flex items-center gap-x-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-blue-600 text-white"
+                          : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                      }`
+                    }
+                  >
+                    <IconComponent />
+                    {item.label}
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       <div className="flex items-center gap-x-3 border-t border-slate-800 px-4 py-4">

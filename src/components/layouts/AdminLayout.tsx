@@ -1,17 +1,27 @@
 import { Outlet, useLocation } from "react-router-dom";
 import AdminSidebar from "../admin/AdminSidebar";
 import AdminTopbar from "../admin/AdminTopbar";
-import { adminNav } from "../../data/admin.data";
+import { adminNav } from "../../data/admin-nav.data";
 
 const getTitle = (pathname: string) => {
-  const exact = adminNav.find((item) => item.path === pathname);
-  if (exact) return exact.label;
+  for (const group of adminNav) {
+    const exact = group.items.find((item) => item.path === pathname);
+    if (exact) return exact.label;
+  }
 
+  if (pathname.startsWith("/admin/courses/new")) return "Yangi kurs yaratish";
+  if (pathname.startsWith("/admin/courses/")) return "Kursni tahrirlash";
   if (pathname.startsWith("/admin/students/new"))
     return "Yangi talaba qo'shish";
   if (pathname.startsWith("/admin/students/")) return "Talaba profili";
-  if (pathname.startsWith("/admin/groups/new")) return "Yangi guruh yaratish";
-  if (pathname.startsWith("/admin/groups/")) return "Guruh tafsilotlari";
+  if (pathname.startsWith("/admin/instructors/new"))
+    return "Yangi o'qituvchi qo'shish";
+  if (pathname.startsWith("/admin/instructors/")) return "O'qituvchi profili";
+  if (pathname.startsWith("/admin/payments/")) return "To'lov tafsiloti";
+  if (pathname.startsWith("/admin/blog/comments"))
+    return "Izohlar moderatsiyasi";
+  if (pathname.startsWith("/admin/blog/new")) return "Yangi maqola";
+  if (pathname.startsWith("/admin/blog/")) return "Maqolani tahrirlash";
 
   return "Admin panel";
 };

@@ -26,14 +26,23 @@ import RequireAuth from "./require-auth.route";
 import AuthLayout from "../components/layouts/AuthLayout";
 import AdminLayout from "../components/layouts/AdminLayout";
 import AdminDashboard from "../pages/admin/AdminDashboard";
-import Students from "../pages/admin/Students";
-import StudentDetails from "../pages/admin/StudentDetails";
-import AddStudent from "../pages/admin/AddStudent";
-import Groups from "../pages/admin/Groups";
-import GroupDetails from "../pages/admin/GroupDetails";
-import CreateGroup from "../pages/admin/CreateGroup";
-import Attendance from "../pages/admin/Attendance";
-import Schedule from "../pages/admin/Schedule";
+import AdminStudents from "../pages/admin/Students";
+import AdminStudentDetails from "../pages/admin/StudentDetails";
+import AdminStudentForm from "../pages/admin/StudentForm";
+import AdminInstructors from "../pages/admin/Instructors";
+import AdminInstructorForm from "../pages/admin/InstructorForm";
+import AdminInstructorDetails from "../pages/admin/InstructorDetails";
+import AdminCourses from "../pages/admin/Courses";
+import AdminCourseForm from "../pages/admin/CourseForm";
+import AdminPayments from "../pages/admin/Payments";
+import AdminPaymentDetails from "../pages/admin/PaymentDetails";
+import AdminEnrollments from "../pages/admin/Enrollments";
+import AdminCertificates from "../pages/admin/Certificates";
+import AdminReviews from "../pages/admin/Reviews";
+import AdminBlogPosts from "../pages/admin/BlogPosts";
+import AdminBlogPostForm from "../pages/admin/BlogPostForm";
+import AdminBlogComments from "../pages/admin/BlogComments";
+import AdminContact from "../pages/admin/Contact";
 import CourseLesson from "../pages/CourseLesson";
 
 const routes = createBrowserRouter([
@@ -140,36 +149,88 @@ const routes = createBrowserRouter([
                 element: <AdminDashboard />,
               },
               {
+                path: "courses",
+                element: <AdminCourses />,
+              },
+              {
+                path: "courses/new",
+                element: <AdminCourseForm />,
+              },
+              {
+                path: "courses/:id/edit",
+                element: <AdminCourseForm />,
+              },
+              {
                 path: "students",
-                element: <Students />,
+                element: <AdminStudents />,
               },
               {
                 path: "students/new",
-                element: <AddStudent />,
+                element: <AdminStudentForm />,
               },
               {
                 path: "students/:id",
-                element: <StudentDetails />,
+                element: <AdminStudentDetails />,
               },
               {
-                path: "groups",
-                element: <Groups />,
+                path: "students/:id/edit",
+                element: <AdminStudentForm />,
               },
               {
-                path: "groups/new",
-                element: <CreateGroup />,
+                path: "instructors",
+                element: <AdminInstructors />,
               },
               {
-                path: "groups/:id",
-                element: <GroupDetails />,
+                path: "instructors/new",
+                element: <AdminInstructorForm />,
               },
               {
-                path: "attendance",
-                element: <Attendance />,
+                path: "instructors/:id",
+                element: <AdminInstructorDetails />,
               },
               {
-                path: "schedule",
-                element: <Schedule />,
+                path: "instructors/:id/edit",
+                element: <AdminInstructorForm />,
+              },
+              {
+                path: "payments",
+                element: <AdminPayments />,
+              },
+              {
+                path: "payments/:id",
+                element: <AdminPaymentDetails />,
+              },
+              {
+                path: "enrollments",
+                element: <AdminEnrollments />,
+              },
+              {
+                path: "certificates",
+                element: <AdminCertificates />,
+              },
+              {
+                path: "reviews",
+                element: <AdminReviews />,
+              },
+              {
+                path: "blog",
+                element: <AdminBlogPosts />,
+              },
+              {
+                path: "blog/new",
+                element: <AdminBlogPostForm />,
+              },
+              {
+                path: "blog/comments",
+                element: <AdminBlogComments />,
+              },
+              {
+                path: "blog/:id/edit",
+                element: <AdminBlogPostForm />,
+              },
+              {
+                path: "contact",
+                element: <AdminContact />,
               },
             ],
           },
