@@ -13,7 +13,11 @@ const About = () => {
       <PageHero
         breadcrumb="Biz haqimizda"
         title="Bizning hikoyamiz"
-        subtitle="2015-yildan beri O'zbekistonda zamonaviy IT va dizayn ta'limini rivojlantirib kelmoqdamiz."
+        subtitle="2015-yilda kichik bir auditoriyada boshlanib, bugun O'zbekistondagi eng yirik
+online IT va dizayn ta'lim platformalaridan biriga aylandik. 10 yil ichida 5000+
+talabani bitirib, ularning hayotini o'zgartirishga ulush qo'shdik.
+Bizning maqsad — har bir o'zbek yoshining zamonaviy mehnat bozorida
+muvaffaqiyatli o'rin egallashiga yordam berish."
       />
 
       <section className="py-16">
@@ -29,16 +33,17 @@ const About = () => {
             <div>
               <h3 className="text-lg font-bold text-gray-900">Missiyamiz</h3>
               <p className="mt-2 leading-relaxed text-gray-600">
-                Har bir talabaga sifatli, amaliyotga yo'naltirilgan ta'lim
-                berish orqali ularni raqobatbardosh mutaxassisga aylantirish va
-                mehnat bozorida munosib o'rin egallashiga ko'maklashish.
+                O'zbek yoshlariga zamonaviy IT va dizayn sohalarida sifatli,
+                amaliy va keng qamrovli ta'lim berish. Har bir bitiruvchi mehnat
+                bozorida raqobatbardosh mutaxassis sifatida o'rin egallashi.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Vizyamiz</h3>
+              <h3 className="text-lg font-bold text-gray-900">Vizyonimiz</h3>
               <p className="mt-2 leading-relaxed text-gray-600">
-                O'rta Osiyoda IT ta'limi bo'yicha yetakchi markazga aylanish va
-                minglab yoshlarning kelajagini raqamli iqtisodiyotga bog'lash.
+                2030-yilga borib Markaziy Osiyodagi eng nufuzli IT ta'lim
+                platformalaridan biriga aylanish. 50 000+ bitiruvchiga ega
+                bo'lish va xalqaro miqyosda tan olinish.
               </p>
             </div>
           </div>
