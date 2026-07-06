@@ -24,7 +24,7 @@ const BlogCard = ({ post }: { post: BlogPostListItem }) => {
         <img
           src={post.imageUrl || FALLBACK_IMAGE}
           alt={post.title}
-          className="h-44 w-full object-cover"
+          className="h-100 w-full object-cover"
         />
       </Link>
       <div className="flex flex-1 flex-col p-5">
