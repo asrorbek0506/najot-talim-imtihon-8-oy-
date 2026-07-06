@@ -3,12 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Icon } from "../../components/ui/Icon";
 import Button from "../../components/ui/Button";
+import ImageUpload from "../../components/admin/ImageUpload";
 import {
   useAdminStudent,
   useAdminStudentEnrollments,
   useAdminStudentPayments,
   useDeleteStudent,
 } from "../../hooks/api/useAdminStudents";
+import { useUploadStudentAvatar } from "../../hooks/api/useFileUpload";
 import { formatPrice } from "../../utils/format";
 
 type Tab = "enrollments" | "payments";
@@ -23,6 +25,8 @@ const StudentDetails = () => {
   const { data: payments } = useAdminStudentPayments(id);
   const { mutateAsync: deleteStudent, isPending: isDeleting } =
     useDeleteStudent();
+  const { mutateAsync: uploadAvatar, isPending: isUploadingAvatar } =
+    useUploadStudentAvatar(id ?? "");
 
   const handleDelete = async () => {
     if (!id) return;
@@ -65,10 +69,10 @@ const StudentDetails = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm lg:col-span-1">
-          <img
-            src={student.avatarUrl || "https://i.pravatar.cc/150"}
-            alt={student.firstName}
-            className="mx-auto h-24 w-24 rounded-full object-cover"
+          <ImageUpload
+            currentUrl={student.avatarUrl}
+            onUpload={(file) => uploadAvatar(file)}
+            isUploading={isUploadingAvatar}
           />
           <h1 className="mt-4 text-lg font-bold text-gray-900">
             {student.firstName} {student.lastName}

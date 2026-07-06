@@ -6,11 +6,13 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import LessonsFieldArray from "../../components/admin/LessonsFieldArray";
+import ImageUpload from "../../components/admin/ImageUpload";
 import {
   useAdminCourse,
   useCreateCourse,
   useUpdateCourse,
 } from "../../hooks/api/useAdminCourses";
+import { useUploadCourseImage } from "../../hooks/api/useFileUpload";
 import { useAdminInstructors } from "../../hooks/api/useAdminInstructors";
 import { courseCategoryOptions } from "../../utils/format";
 import type { CreateCoursePayload } from "../../types/api/admin-course.type";
@@ -27,6 +29,8 @@ const CourseForm = () => {
   const { mutateAsync: updateCourse, isPending: isUpdating } = useUpdateCourse(
     id ?? "",
   );
+  const { mutateAsync: uploadImage, isPending: isUploadingImage } =
+    useUploadCourseImage(id ?? "");
 
   const form = useForm<CreateCoursePayload>({
     defaultValues: {
@@ -232,13 +236,34 @@ const CourseForm = () => {
           </div>
 
           <div className="mt-4">
-            <Input
-              name="imageUrl"
-              type="text"
-              form={form}
-              placeholder="/uploads/courses/abc.jpg yoki https://..."
-              label="Muqova rasm URL"
-            />
+            {isEdit ? (
+              <div className="flex items-center gap-x-6 rounded-lg border border-gray-100 p-4">
+                <ImageUpload
+                  currentUrl={existing?.imageUrl}
+                  onUpload={(file) => uploadImage(file)}
+                  isUploading={isUploadingImage}
+                  shape="square"
+                  label="Muqovani yuklash"
+                />
+                <p className="text-xs text-gray-400">
+                  Yoki quyida to'g'ridan-to'g'ri URL kiriting.
+                </p>
+              </div>
+            ) : (
+              <p className="mb-2 text-xs text-gray-400">
+                Rasm yuklash faqat kurs yaratilgandan so'ng mavjud bo'ladi —
+                hozircha URL kiriting yoki bo'sh qoldiring.
+              </p>
+            )}
+            <div className="mt-3">
+              <Input
+                name="imageUrl"
+                type="text"
+                form={form}
+                placeholder="/uploads/courses/abc.jpg yoki https://..."
+                label="Muqova rasm URL"
+              />
+            </div>
           </div>
 
           <div className="mt-4">

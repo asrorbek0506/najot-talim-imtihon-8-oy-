@@ -17,7 +17,7 @@ export const dashboardNav: DashboardNavGroup[] = [
     items: [
       { label: "Dashboard", icon: "home", path: "/dashboard" },
       { label: "Mening kurslarim", icon: "book", path: "/dashboard/courses" },
-      { label: "Natijalarim", icon: "barChart", path: "/dashboard/results" },
+      { label: "Progress", icon: "barChart", path: "/dashboard/results" },
       {
         label: "Sertifikatlarim",
         icon: "award",
@@ -29,8 +29,16 @@ export const dashboardNav: DashboardNavGroup[] = [
     title: "Hisob",
     items: [
       { label: "Profil", icon: "user", path: "/dashboard/profile" },
-      { label: "To'lovlar", icon: "creditCard", path: "/dashboard/payments" },
-      { label: "Sozlamalar", icon: "settings", path: "/dashboard/settings" },
+      {
+        label: "Xarid tarixi",
+        icon: "creditCard",
+        path: "/dashboard/payments",
+      },
+      {
+        label: "Faol sessiyalar",
+        icon: "settings",
+        path: "/dashboard/settings",
+      },
     ],
   },
 ];

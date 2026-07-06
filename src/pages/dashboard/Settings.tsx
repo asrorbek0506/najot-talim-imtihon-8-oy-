@@ -1,138 +1,94 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import Switch from "../../components/ui/Switch";
 import { Icon } from "../../components/ui/Icon";
+import { useRevokeSession, useSessions } from "../../hooks/api/useSessions";
 
-const languages = ["O'zbek tili", "Русский", "English"];
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleString("uz-UZ", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
 const Settings = () => {
-  const [notifications, setNotifications] = useState({
-    email: true,
-    sms: false,
-    push: true,
-    marketing: false,
-  });
-  const [language, setLanguage] = useState(languages[0]);
-  const [twoFactor, setTwoFactor] = useState(false);
+  const { data: sessions, isLoading } = useSessions();
+  const { mutateAsync: revokeSession, isPending } = useRevokeSession();
 
-  const updateNotification = (
-    key: keyof typeof notifications,
-    value: boolean,
-  ) => {
-    setNotifications((prev) => ({ ...prev, [key]: value }));
-    toast.success("Sozlama saqlandi");
+  const handleRevoke = async (id: string) => {
+    try {
+      await revokeSession(id);
+      toast.success("Sessiya tugatildi");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message ?? "Xatolik yuz berdi");
+    }
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Sozlamalar</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Faol sessiyalar</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Bildirishnomalar, til va xavfsizlik sozlamalarini boshqaring.
+          Hisobingizga kirilgan barcha qurilmalar ro'yxati. Tanimagan sessiyani
+          darhol tugating.
         </p>
       </div>
 
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900">Bildirishnomalar</h2>
-        <div className="mt-2 divide-y divide-gray-100">
-          <Switch
-            checked={notifications.email}
-            onChange={(v) => updateNotification("email", v)}
-            label="Email orqali bildirishnomalar"
-            description="Yangi darslar, natijalar va e'lonlar haqida xabar oling."
-          />
-          <Switch
-            checked={notifications.sms}
-            onChange={(v) => updateNotification("sms", v)}
-            label="SMS orqali bildirishnomalar"
-            description="To'lov va dars eslatmalari SMS orqali yuboriladi."
-          />
-          <Switch
-            checked={notifications.push}
-            onChange={(v) => updateNotification("push", v)}
-            label="Push bildirishnomalar"
-            description="Brauzer/ilova orqali tezkor bildirishnomalar."
-          />
-          <Switch
-            checked={notifications.marketing}
-            onChange={(v) => updateNotification("marketing", v)}
-            label="Marketing xabarlari"
-            description="Aksiya va chegirmalar haqida ma'lumot oling."
-          />
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900">Til va mintaqa</h2>
-        <div className="mt-4 max-w-xs">
-          <label className="text-sm font-medium text-gray-700">
-            Interfeys tili
-          </label>
-          <select
-            value={language}
-            onChange={(e) => {
-              setLanguage(e.target.value);
-              toast.success("Til o'zgartirildi");
-            }}
-            className="mt-1.5 w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
-          >
-            {languages.map((lang) => (
-              <option key={lang} value={lang}>
-                {lang}
-              </option>
+        {isLoading ? (
+          <p className="text-sm text-gray-400">Yuklanmoqda...</p>
+        ) : !sessions || sessions.length === 0 ? (
+          <p className="text-sm text-gray-500">Faol sessiyalar topilmadi.</p>
+        ) : (
+          <div className="divide-y divide-gray-100">
+            {sessions.map((session) => (
+              <div
+                key={session.id}
+                className="flex items-center justify-between gap-x-4 py-4"
+              >
+                <div className="flex items-center gap-x-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <Icon.settings />
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {session.device || "Noma'lum qurilma"}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      {session.ipAddress ? `${session.ipAddress} · ` : ""}
+                      Oxirgi faollik: {formatDate(session.lastActiveAt)}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleRevoke(session.id)}
+                  disabled={isPending}
+                  className="rounded-lg border border-red-100 px-3.5 py-2 text-xs font-medium text-red-500 transition-colors hover:bg-red-50"
+                >
+                  Tugatish
+                </button>
+              </div>
             ))}
-          </select>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-gray-900">Xavfsizlik</h2>
-        <div className="mt-2 divide-y divide-gray-100">
-          <Switch
-            checked={twoFactor}
-            onChange={(v) => {
-              setTwoFactor(v);
-              toast.success(
-                v
-                  ? "Ikki bosqichli tasdiqlash yoqildi"
-                  : "Ikki bosqichli tasdiqlash o'chirildi",
-              );
-            }}
-            label="Ikki bosqichli tasdiqlash (2FA)"
-            description="Hisobingiz xavfsizligini kuchaytiradi."
-          />
-          <div className="flex items-center justify-between py-3">
-            <span>
-              <span className="block text-sm font-medium text-gray-900">
-                Parol
-              </span>
-              <span className="mt-0.5 block text-xs text-gray-500">
-                Oxirgi marta 3 oy oldin o'zgartirilgan.
-              </span>
-            </span>
-            <Link
-              to="/dashboard/profile"
-              className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-            >
-              O'zgartirish
-            </Link>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-bold text-gray-900">Parol</h2>
+            <p className="mt-1 text-xs text-gray-500">
+              Parolingizni muntazam yangilab turing.
+            </p>
           </div>
+          <Link
+            to="/dashboard/profile"
+            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+          >
+            O'zgartirish
+          </Link>
         </div>
-      </div>
-
-      <div className="rounded-2xl border border-red-100 bg-red-50/40 p-6">
-        <h2 className="flex items-center gap-x-2 text-lg font-bold text-red-600">
-          <Icon.alertCircle />
-          Xavfli hudud
-        </h2>
-        <p className="mt-2 text-sm text-red-500">
-          Hisobingizni o'chirsangiz, barcha kurslar, sertifikatlar va progress
-          ma'lumotlari butunlay o'chiriladi. Bu amalni ortga qaytarib bo'lmaydi.
-        </p>
-        <button className="mt-4 rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50">
-          Hisobni o'chirish
-        </button>
       </div>
     </div>
   );

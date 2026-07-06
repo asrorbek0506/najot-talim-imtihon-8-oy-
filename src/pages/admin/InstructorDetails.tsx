@@ -2,10 +2,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Icon } from "../../components/ui/Icon";
 import Button from "../../components/ui/Button";
+import ImageUpload from "../../components/admin/ImageUpload";
 import {
   useAdminInstructor,
   useDeleteInstructor,
 } from "../../hooks/api/useAdminInstructors";
+import { useUploadInstructorAvatar } from "../../hooks/api/useFileUpload";
 import { formatRating } from "../../utils/format";
 
 const InstructorDetails = () => {
@@ -13,6 +15,8 @@ const InstructorDetails = () => {
   const navigate = useNavigate();
   const { data: instructor, isLoading } = useAdminInstructor(id);
   const { mutateAsync: deleteInstructor, isPending } = useDeleteInstructor();
+  const { mutateAsync: uploadAvatar, isPending: isUploadingAvatar } =
+    useUploadInstructorAvatar(id ?? "");
 
   const handleDelete = async () => {
     if (!id) return;
@@ -57,10 +61,10 @@ const InstructorDetails = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm lg:col-span-1">
-          <img
-            src={instructor.avatarUrl || "https://i.pravatar.cc/150"}
-            alt={instructor.firstName}
-            className="mx-auto h-24 w-24 rounded-full object-cover"
+          <ImageUpload
+            currentUrl={instructor.avatarUrl}
+            onUpload={(file) => uploadAvatar(file)}
+            isUploading={isUploadingAvatar}
           />
           <h1 className="mt-4 text-lg font-bold text-gray-900">
             {instructor.firstName} {instructor.lastName}
