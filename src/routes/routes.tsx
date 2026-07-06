@@ -21,6 +21,7 @@ import BlogDetails from "../pages/BlogDetails";
 import Pricing from "../pages/Pricing";
 import About from "../pages/About";
 import Faq from "../pages/Faq";
+import Enroll from "../pages/Enroll";
 import ProtectedRoute from "./protected.route";
 import RequireAuth from "./require-auth.route";
 import AuthLayout from "../components/layouts/AuthLayout";
@@ -91,6 +92,10 @@ const routes = createBrowserRouter([
           {
             path: "/faq",
             element: <Faq />,
+          },
+          {
+            path: "/enroll",
+            element: <Enroll />,
           },
           {
             path: "/contact",

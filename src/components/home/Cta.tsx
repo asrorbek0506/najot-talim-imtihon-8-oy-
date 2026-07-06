@@ -20,9 +20,12 @@ const Cta = () => {
               >
                 Bepul ro'yxatdan o'tish
               </Link>
-              <button className="rounded-lg border border-white/40 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
-                Konsultatsiya olish
-              </button>
+              <Link
+                to="/enroll"
+                className="rounded-lg border border-white/40 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              >
+                Qanday boshlash kerak?
+              </Link>
             </div>
           </div>
           <img
