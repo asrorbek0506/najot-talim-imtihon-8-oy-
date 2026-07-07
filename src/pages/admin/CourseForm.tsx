@@ -15,6 +15,7 @@ import {
 import { useUploadCourseImage } from "../../hooks/api/useFileUpload";
 import { useAdminInstructors } from "../../hooks/api/useAdminInstructors";
 import { courseCategoryOptions } from "../../utils/format";
+import { cleanEmptyStrings } from "../../utils/clean-payload";
 import type { CreateCoursePayload } from "../../types/api/admin-course.type";
 
 const CourseForm = () => {
@@ -43,9 +44,24 @@ const CourseForm = () => {
   const {
     control,
     register,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     reset,
+    watch,
+    setValue,
   } = form;
+
+  const nameValue = watch("name");
+
+  useEffect(() => {
+    if (isEdit || dirtyFields.slug || !nameValue) return;
+    const generatedSlug = nameValue
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+    setValue("slug", generatedSlug);
+  }, [nameValue, isEdit, dirtyFields.slug, setValue]);
 
   const {
     fields: moduleFields,
@@ -79,12 +95,21 @@ const CourseForm = () => {
 
   const onSubmit = async (values: CreateCoursePayload) => {
     try {
-      const payload = {
+      const payload = cleanEmptyStrings({
         ...values,
         price: Number(values.price),
         oldPrice: values.oldPrice ? Number(values.oldPrice) : undefined,
         durationMonths: Number(values.durationMonths),
-      };
+        modules: (values.modules ?? []).map((module, moduleIndex) => ({
+          ...module,
+          order: moduleIndex + 1,
+          lessons: (module.lessons ?? []).map((lesson, lessonIndex) => ({
+            ...lesson,
+            order: lessonIndex + 1,
+            durationMinutes: Number(lesson.durationMinutes),
+          })),
+        })),
+      });
       if (isEdit && id) {
         await updateCourse(payload);
         toast.success("Kurs yangilandi");
@@ -132,7 +157,10 @@ const CourseForm = () => {
               label="Kurs nomi"
               required
               error={errors.name?.message}
-              rules={{ required: "Kurs nomini kiriting" }}
+              rules={{
+                required: "Kurs nomini kiriting",
+                minLength: { value: 2, message: "Kamida 2 ta belgi" },
+              }}
             />
             <Input
               name="slug"
@@ -142,7 +170,13 @@ const CourseForm = () => {
               label="Slug (URL)"
               required
               error={errors.slug?.message}
-              rules={{ required: "Slug kiriting" }}
+              rules={{
+                required: "Slug kiriting",
+                pattern: {
+                  value: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+                  message: "Faqat kichik lotin harflari, raqam va '-' belgisi",
+                },
+              }}
             />
 
             <div>
@@ -185,7 +219,11 @@ const CourseForm = () => {
               label="Narx (so'm)"
               required
               error={errors.price?.message}
-              rules={{ required: "Narxni kiriting" }}
+              rules={{
+                required: "Narxni kiriting",
+                validate: (value) =>
+                  Number(value) > 0 || "Narx musbat son bo'lishi kerak",
+              }}
             />
             <Input
               name="oldPrice"
@@ -202,7 +240,11 @@ const CourseForm = () => {
               label="Davomiyligi (oy)"
               required
               error={errors.durationMonths?.message}
-              rules={{ required: "Davomiylikni kiriting" }}
+              rules={{
+                required: "Davomiylikni kiriting",
+                validate: (value) =>
+                  Number(value) >= 1 || "Kamida 1 oy bo'lishi kerak",
+              }}
             />
 
             <div>
@@ -271,20 +313,36 @@ const CourseForm = () => {
               Qisqa tavsif
             </label>
             <textarea
-              {...register("description", { required: true })}
+              {...register("description", {
+                required: "Qisqa tavsifni kiriting",
+                minLength: { value: 10, message: "Kamida 10 ta belgi" },
+              })}
               rows={2}
               className="mt-1.5 w-full resize-none rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             />
+            {errors.description && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.description.message}
+              </p>
+            )}
           </div>
           <div className="mt-4">
             <label className="text-sm font-medium text-gray-700">
               To'liq tavsif
             </label>
             <textarea
-              {...register("longDescription", { required: true })}
+              {...register("longDescription", {
+                required: "To'liq tavsifni kiriting",
+                minLength: { value: 20, message: "Kamida 20 ta belgi" },
+              })}
               rows={5}
               className="mt-1.5 w-full resize-none rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             />
+            {errors.longDescription && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.longDescription.message}
+              </p>
+            )}
           </div>
 
           <label className="mt-4 flex items-center gap-x-2 text-sm text-gray-700">

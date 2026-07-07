@@ -47,18 +47,6 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-x-4">
-          <button className="hidden items-center gap-x-1.5 text-sm font-medium text-gray-600 sm:flex">
-            <span className="text-base">🌐</span> O'zbek
-            <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M5 7.5L10 12.5L15 7.5"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
           {isLoggedIn ? (
             <ProfileDropdown
               name={user ? `${user.firstName} ${user.lastName}` : undefined}

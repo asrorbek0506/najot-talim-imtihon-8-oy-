@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "../../components/ui/Input";
+import { cleanEmptyStrings } from "../../utils/clean-payload";
 import Button from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import {
@@ -55,10 +56,10 @@ const StudentForm = () => {
     try {
       if (isEdit && id) {
         const { password, ...rest } = values as any;
-        await updateStudent(rest);
+        await updateStudent(cleanEmptyStrings(rest));
         toast.success("Talaba ma'lumotlari yangilandi");
       } else {
-        await createStudent(values);
+        await createStudent(cleanEmptyStrings(values));
         toast.success("Yangi talaba qo'shildi");
       }
       navigate("/admin/students");

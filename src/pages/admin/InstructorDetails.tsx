@@ -124,11 +124,55 @@ const InstructorDetails = () => {
                   {instructor.phone}
                 </dd>
               </div>
+              {instructor.address && (
+                <div className="sm:col-span-2">
+                  <dt className="text-xs text-gray-400">Manzil</dt>
+                  <dd className="mt-1 text-sm text-gray-900">
+                    {instructor.address}
+                  </dd>
+                </div>
+              )}
             </dl>
             {instructor.bio && (
               <div className="mt-4">
                 <dt className="text-xs text-gray-400">Bio</dt>
                 <dd className="mt-1 text-sm text-gray-700">{instructor.bio}</dd>
+              </div>
+            )}
+            {(instructor.socialLinks?.telegram ||
+              instructor.socialLinks?.linkedin ||
+              instructor.socialLinks?.github) && (
+              <div className="mt-4 flex flex-wrap gap-x-2 border-t border-gray-100 pt-4">
+                {instructor.socialLinks?.telegram && (
+                  <a
+                    href={instructor.socialLinks.telegram}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+                  >
+                    Telegram
+                  </a>
+                )}
+                {instructor.socialLinks?.linkedin && (
+                  <a
+                    href={instructor.socialLinks.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+                  >
+                    LinkedIn
+                  </a>
+                )}
+                {instructor.socialLinks?.github && (
+                  <a
+                    href={instructor.socialLinks.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+                  >
+                    GitHub
+                  </a>
+                )}
               </div>
             )}
           </div>

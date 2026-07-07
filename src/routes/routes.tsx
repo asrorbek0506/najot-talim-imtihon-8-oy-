@@ -37,6 +37,7 @@ import AdminCourses from "../pages/admin/Courses";
 import AdminCourseForm from "../pages/admin/CourseForm";
 import AdminPayments from "../pages/admin/Payments";
 import AdminPaymentDetails from "../pages/admin/PaymentDetails";
+import AdminPaymentForm from "../pages/admin/PaymentForm";
 import AdminEnrollments from "../pages/admin/Enrollments";
 import AdminCertificates from "../pages/admin/Certificates";
 import AdminReviews from "../pages/admin/Reviews";
@@ -200,6 +201,10 @@ const routes = createBrowserRouter([
               {
                 path: "payments",
                 element: <AdminPayments />,
+              },
+              {
+                path: "payments/new",
+                element: <AdminPaymentForm />,
               },
               {
                 path: "payments/:id",

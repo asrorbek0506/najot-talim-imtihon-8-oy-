@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "../../components/ui/Input";
+import { cleanEmptyStrings } from "../../utils/clean-payload";
 import Button from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import {
@@ -45,6 +46,12 @@ const InstructorForm = () => {
         specialty: existing.specialty,
         experience: existing.experience,
         bio: existing.bio ?? "",
+        address: existing.address ?? "",
+        socialLinks: {
+          github: existing.socialLinks?.github ?? "",
+          linkedin: existing.socialLinks?.linkedin ?? "",
+          telegram: existing.socialLinks?.telegram ?? "",
+        },
         status: existing.status,
       });
     }
@@ -52,12 +59,30 @@ const InstructorForm = () => {
 
   const onSubmit = async (values: InstructorFormValues) => {
     try {
+      const cleanedSocialLinks = values.socialLinks
+        ? {
+            github: values.socialLinks.github || undefined,
+            linkedin: values.socialLinks.linkedin || undefined,
+            telegram: values.socialLinks.telegram || undefined,
+          }
+        : undefined;
+      const hasSocialLinks =
+        cleanedSocialLinks &&
+        (cleanedSocialLinks.github ||
+          cleanedSocialLinks.linkedin ||
+          cleanedSocialLinks.telegram);
+
+      const preparedValues = {
+        ...values,
+        socialLinks: hasSocialLinks ? cleanedSocialLinks : undefined,
+      };
+
       if (isEdit && id) {
-        const { password, ...rest } = values as any;
-        await updateInstructor(rest);
+        const { password, ...rest } = preparedValues as any;
+        await updateInstructor(cleanEmptyStrings(rest));
         toast.success("O'qituvchi ma'lumotlari yangilandi");
       } else {
-        await createInstructor(values);
+        await createInstructor(cleanEmptyStrings(preparedValues));
         toast.success("Yangi o'qituvchi qo'shildi");
       }
       navigate("/admin/instructors");
@@ -158,6 +183,16 @@ const InstructorForm = () => {
               </select>
             </div>
           </div>
+          <div className="mt-4">
+            <Input
+              name="address"
+              type="text"
+              form={form}
+              placeholder="Toshkent sh., Chilonzor tumani"
+              label="Manzil"
+              leftIcon={<Icon.location />}
+            />
+          </div>
         </div>
 
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -190,6 +225,38 @@ const InstructorForm = () => {
               rows={4}
               placeholder="Qisqacha tarjimai hol..."
               className="mt-1.5 w-full resize-none rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            />
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <h2 className="text-base font-bold text-gray-900">
+            Ijtimoiy tarmoqlar
+          </h2>
+          <p className="mt-1 text-xs text-gray-400">
+            Ixtiyoriy — o'qituvchi profilida ko'rsatiladi.
+          </p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <Input
+              name="socialLinks.telegram"
+              type="text"
+              form={form}
+              placeholder="https://t.me/username"
+              label="Telegram"
+            />
+            <Input
+              name="socialLinks.linkedin"
+              type="text"
+              form={form}
+              placeholder="https://linkedin.com/in/username"
+              label="LinkedIn"
+            />
+            <Input
+              name="socialLinks.github"
+              type="text"
+              form={form}
+              placeholder="https://github.com/username"
+              label="GitHub"
             />
           </div>
         </div>

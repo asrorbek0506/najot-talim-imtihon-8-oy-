@@ -40,11 +40,20 @@ const Payments = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">To'lovlar</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Jami {data?.total ?? 0} ta to'lov yozuvi
-        </p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">To'lovlar</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Jami {data?.total ?? 0} ta to'lov yozuvi
+          </p>
+        </div>
+        <Link
+          to="/admin/payments/new"
+          className="flex items-center justify-center gap-x-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+        >
+          <Icon.plus />
+          Yangi to'lov
+        </Link>
       </div>
 
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">

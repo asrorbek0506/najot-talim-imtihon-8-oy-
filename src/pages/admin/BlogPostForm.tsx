@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "../../components/ui/Input";
+import { cleanEmptyStrings } from "../../utils/clean-payload";
 import Button from "../../components/ui/Button";
 import { Icon } from "../../components/ui/Icon";
 import {
@@ -57,11 +58,12 @@ const BlogPostForm = () => {
 
   const onSubmit = async (values: CreateBlogPostPayload) => {
     try {
+      const payload = cleanEmptyStrings(values);
       if (isEdit && id) {
-        await updatePost(values);
+        await updatePost(payload);
         toast.success("Maqola yangilandi");
       } else {
-        await createPost(values);
+        await createPost(payload);
         toast.success("Yangi maqola yaratildi");
       }
       navigate("/admin/blog");
