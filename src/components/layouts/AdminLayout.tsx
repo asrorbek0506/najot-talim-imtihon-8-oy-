@@ -1,3 +1,4 @@
+import { Suspense, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import AdminSidebar from "../admin/AdminSidebar";
 import AdminTopbar from "../admin/AdminTopbar";
@@ -28,17 +29,36 @@ const getTitle = (pathname: string) => {
 
 const AdminLayout = () => {
   const { pathname } = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-900">
-      <AdminSidebar />
+      <AdminSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <AdminTopbar title={getTitle(pathname)} />
+        <AdminTopbar
+          title={getTitle(pathname)}
+          onMenuClick={() => setSidebarOpen(true)}
+        />
 
         <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <Outlet />
+            <Suspense
+              fallback={
+                <div className="animate-pulse text-sm text-gray-400">
+                  Yuklanmoqda...
+                </div>
+              }
+            >
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>

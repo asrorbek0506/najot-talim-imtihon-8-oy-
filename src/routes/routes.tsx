@@ -1,16 +1,21 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import RootLayout from "../components/layouts/RootLayout";
 import DashboardLayout from "../components/layouts/DashboardLayout";
 import Login from "../pages/Login";
 import Contact from "../pages/Contact";
 import Register from "../pages/Register";
-import StudentDashboard from "../pages/StudentDashboard";
-import MyCourses from "../pages/dashboard/MyCourses";
-import Results from "../pages/dashboard/Results";
-import Certificates from "../pages/dashboard/Certificates";
-import Profile from "../pages/dashboard/Profile";
-import Payments from "../pages/dashboard/Payments";
-import Settings from "../pages/dashboard/Settings";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+import VerifyEmail from "../pages/VerifyEmail";
+const StudentDashboard = lazy(() => import("../pages/StudentDashboard"));
+const MyCourses = lazy(() => import("../pages/dashboard/MyCourses"));
+const Results = lazy(() => import("../pages/dashboard/Results"));
+const Certificates = lazy(() => import("../pages/dashboard/Certificates"));
+const MyReviews = lazy(() => import("../pages/dashboard/MyReviews"));
+const Profile = lazy(() => import("../pages/dashboard/Profile"));
+const Payments = lazy(() => import("../pages/dashboard/Payments"));
+const Settings = lazy(() => import("../pages/dashboard/Settings"));
 import Teachers from "../pages/Teachers";
 import TeacherDetails from "../pages/TeacherDetails";
 import Home from "../pages/Home";
@@ -26,26 +31,28 @@ import ProtectedRoute from "./protected.route";
 import RequireAuth from "./require-auth.route";
 import AuthLayout from "../components/layouts/AuthLayout";
 import AdminLayout from "../components/layouts/AdminLayout";
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import AdminStudents from "../pages/admin/Students";
-import AdminStudentDetails from "../pages/admin/StudentDetails";
-import AdminStudentForm from "../pages/admin/StudentForm";
-import AdminInstructors from "../pages/admin/Instructors";
-import AdminInstructorForm from "../pages/admin/InstructorForm";
-import AdminInstructorDetails from "../pages/admin/InstructorDetails";
-import AdminCourses from "../pages/admin/Courses";
-import AdminCourseForm from "../pages/admin/CourseForm";
-import AdminPayments from "../pages/admin/Payments";
-import AdminPaymentDetails from "../pages/admin/PaymentDetails";
-import AdminPaymentForm from "../pages/admin/PaymentForm";
-import AdminEnrollments from "../pages/admin/Enrollments";
-import AdminCertificates from "../pages/admin/Certificates";
-import AdminReviews from "../pages/admin/Reviews";
-import AdminBlogPosts from "../pages/admin/BlogPosts";
-import AdminBlogPostForm from "../pages/admin/BlogPostForm";
-import AdminBlogComments from "../pages/admin/BlogComments";
-import AdminContact from "../pages/admin/Contact";
-import CourseLesson from "../pages/CourseLesson";
+const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
+const AdminStudents = lazy(() => import("../pages/admin/Students"));
+const AdminStudentDetails = lazy(() => import("../pages/admin/StudentDetails"));
+const AdminStudentForm = lazy(() => import("../pages/admin/StudentForm"));
+const AdminInstructors = lazy(() => import("../pages/admin/Instructors"));
+const AdminInstructorForm = lazy(() => import("../pages/admin/InstructorForm"));
+const AdminInstructorDetails = lazy(
+  () => import("../pages/admin/InstructorDetails"),
+);
+const AdminCourses = lazy(() => import("../pages/admin/Courses"));
+const AdminCourseForm = lazy(() => import("../pages/admin/CourseForm"));
+const AdminPayments = lazy(() => import("../pages/admin/Payments"));
+const AdminPaymentDetails = lazy(() => import("../pages/admin/PaymentDetails"));
+const AdminPaymentForm = lazy(() => import("../pages/admin/PaymentForm"));
+const AdminEnrollments = lazy(() => import("../pages/admin/Enrollments"));
+const AdminCertificates = lazy(() => import("../pages/admin/Certificates"));
+const AdminReviews = lazy(() => import("../pages/admin/Reviews"));
+const AdminBlogPosts = lazy(() => import("../pages/admin/BlogPosts"));
+const AdminBlogPostForm = lazy(() => import("../pages/admin/BlogPostForm"));
+const AdminBlogComments = lazy(() => import("../pages/admin/BlogComments"));
+const AdminContact = lazy(() => import("../pages/admin/Contact"));
+const CourseLesson = lazy(() => import("../pages/CourseLesson"));
 
 const routes = createBrowserRouter([
   {
@@ -126,6 +133,10 @@ const routes = createBrowserRouter([
               {
                 path: "certificates",
                 element: <Certificates />,
+              },
+              {
+                path: "reviews",
+                element: <MyReviews />,
               },
               {
                 path: "profile",
@@ -251,7 +262,17 @@ const routes = createBrowserRouter([
         children: [
           {
             path: "/learn/:courseId",
-            element: <CourseLesson />,
+            element: (
+              <Suspense
+                fallback={
+                  <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">
+                    Yuklanmoqda...
+                  </div>
+                }
+              >
+                <CourseLesson />
+              </Suspense>
+            ),
           },
         ],
       },
@@ -272,6 +293,18 @@ const routes = createBrowserRouter([
         <Register />,
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmail />,
   },
 ]);
 export default routes;

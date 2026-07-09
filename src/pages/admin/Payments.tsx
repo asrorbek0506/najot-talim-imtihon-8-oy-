@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { Link } from "react-router-dom";
 import { Icon } from "../../components/ui/Icon";
 import { useAdminPayments } from "../../hooks/api/useAdminFinance";
@@ -24,13 +25,14 @@ const statusLabels: Record<PaymentStatusType, string> = {
 
 const Payments = () => {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search);
   const [status, setStatus] = useState<"" | PaymentStatusType>("");
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useAdminPayments({
     page,
     limit: 10,
-    search: search.trim() || undefined,
+    search: debouncedSearch.trim() || undefined,
     status: status || undefined,
   });
 

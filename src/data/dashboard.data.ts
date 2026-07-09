@@ -23,6 +23,11 @@ export const dashboardNav: DashboardNavGroup[] = [
         icon: "award",
         path: "/dashboard/certificates",
       },
+      {
+        label: "Sharhlarim",
+        icon: "star",
+        path: "/dashboard/reviews",
+      },
     ],
   },
   {

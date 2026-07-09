@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import PageHero from "../components/ui/PageHero";
 import BlogCard from "../components/blog/BlogCard";
 import { Icon } from "../components/ui/Icon";
@@ -6,6 +7,7 @@ import { useBlogCategories, useBlogPosts } from "../hooks/api/useBlog";
 
 const Blog = () => {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
@@ -18,7 +20,7 @@ const Blog = () => {
   const { data, isLoading, isFetching } = useBlogPosts({
     page,
     limit: 9,
-    search: search.trim() || undefined,
+    search: debouncedSearch.trim() || undefined,
     category: category || undefined,
   });
 

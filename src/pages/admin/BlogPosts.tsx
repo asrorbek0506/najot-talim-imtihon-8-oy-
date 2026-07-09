@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Icon } from "../../components/ui/Icon";
@@ -22,13 +23,14 @@ const statusLabels: Record<string, string> = {
 
 const BlogPosts = () => {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search);
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useAdminBlogPosts({
     page,
     limit: 10,
-    search: search.trim() || undefined,
+    search: debouncedSearch.trim() || undefined,
     status: status || undefined,
   });
   const { mutateAsync: publishPost } = usePublishBlogPost();

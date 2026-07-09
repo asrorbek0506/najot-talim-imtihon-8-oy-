@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import PageHero from "../components/ui/PageHero";
 import CoursesToolbar, {
   type SortOption,
@@ -22,6 +23,7 @@ const sortToQuery: Record<
 
 const Courses = () => {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search);
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState<ApiCourseLevel | "">("");
   const [sort, setSort] = useState<SortOption>("popular");
@@ -31,12 +33,12 @@ const Courses = () => {
     () => ({
       page,
       limit: 8,
-      search: search.trim() || undefined,
+      search: debouncedSearch.trim() || undefined,
       category: category || undefined,
       level: level || undefined,
       ...sortToQuery[sort],
     }),
-    [page, search, category, level, sort],
+    [page, debouncedSearch, category, level, sort],
   );
 
   const { data, isLoading, isFetching } = useCourses(queryParams);

@@ -170,12 +170,12 @@ const Login = () => {
                 />
                 Meni eslab qol
               </label>
-              <a
-                href="#"
+              <Link
+                to="/forgot-password"
                 className="text-sm font-medium text-blue-600 hover:underline"
               >
                 Parolni unutdingizmi?
-              </a>
+              </Link>
             </div>
 
             <Button

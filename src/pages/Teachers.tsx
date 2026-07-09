@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import TeachersGrid from "../components/teachers/TeachersGrid";
 import TeachersToolbar from "../components/teachers/TeachersToolbar";
 import PageHero from "../components/ui/PageHero";
@@ -6,12 +7,13 @@ import { useInstructors } from "../hooks/api/useInstructors";
 
 const Teachers = () => {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search);
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isFetching } = useInstructors({
     page,
     limit: 8,
-    search: search.trim() || undefined,
+    search: debouncedSearch.trim() || undefined,
   });
 
   return (

@@ -30,11 +30,11 @@ export const useCreateReview = () => {
 
 export interface MyReview {
   id: string;
-  courseId: string;
   rating: number;
   text: string | null;
   status: "pending" | "approved" | "rejected";
   createdAt: string;
+  course: { id: string; name: string };
 }
 
 export const useMyReviews = () => {

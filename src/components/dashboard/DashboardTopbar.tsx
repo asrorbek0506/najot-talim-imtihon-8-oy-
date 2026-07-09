@@ -1,12 +1,17 @@
 import { Icon } from "../ui/Icon";
 import useUserStore from "../../store/user.store";
 
-const DashboardTopbar = () => {
+interface DashboardTopbarProps {
+  onMenuClick?: () => void;
+}
+
+const DashboardTopbar = ({ onMenuClick }: DashboardTopbarProps) => {
   const user = useUserStore((state) => state.user);
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-gray-100 bg-white/90 px-4 backdrop-blur sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-x-4 border-b border-gray-100 bg-white/90 px-4 backdrop-blur sm:px-6 lg:px-8">
       <button
-        className="flex items-center gap-x-2.5 text-gray-600 lg:gap-x-3"
+        onClick={onMenuClick}
+        className="flex items-center gap-x-2.5 text-gray-600 lg:hidden"
         aria-label="Menyu"
       >
         <Icon.menu />
